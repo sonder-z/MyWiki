@@ -1,5 +1,6 @@
 package com.example.wiki.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController //返回字符串 相当于@Controller+@ResponseBody 更多的是返回json对象
 //@Controller   //返回页面  现在前后端分离不需要返回页面了
 public class testContoller {
+
+//    注入属性，获取位于application.properties中配置的属性 @Value("${test.hello:TEST}")添加默认配置
+    @Value("${test.hello}")
+    private String testHello;
 
 //    权限 返回类型 方法名（参数）
 //    将方法变成接口 添加请求地址
@@ -21,7 +26,7 @@ public class testContoller {
 //    404 请求访问不到 没有这样一个接口
     @RequestMapping("/hello")
     public String hello(){
-        return "hello world";
+        return "hello world!!" + testHello;
     }
 
 }
