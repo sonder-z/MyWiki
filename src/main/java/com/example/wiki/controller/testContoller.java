@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class testContoller {
 
 //    注入属性，获取位于application.properties中配置的属性 @Value("${test.hello:TEST}")添加默认配置
-    @Value("${test.hello}")
+//    @Value("${test.hello}")
     private String testHello;
 
 //    权限 返回类型 方法名（参数）
@@ -26,7 +26,16 @@ public class testContoller {
 //    404 请求访问不到 没有这样一个接口
     @RequestMapping("/hello")
     public String hello(){
-        return "hello world!!" + testHello;
+//        return "hello world!!" + testHello;
+        return "hello world!!";
     }
+
+    @PostMapping("/hello/post")
+    public String helloPost(String name){
+//        return "hello world!!" + testHello;
+        return "hello world!!" + name;
+    }
+
+
 
 }
