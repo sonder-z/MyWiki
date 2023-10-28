@@ -37,6 +37,7 @@
                              targetPackage="com.example.wiki.mapper"
                              type="XMLMAPPER" />
         <!-- 表 -->
-        <table tableName="demo" domainObjectName="Demo"/>
+<!--        <table tableName="demo" domainObjectName="Demo"/>-->
+        <table tableName="ebook" domainObjectName="Ebook"/>
     </context>
 </generatorConfiguration>
