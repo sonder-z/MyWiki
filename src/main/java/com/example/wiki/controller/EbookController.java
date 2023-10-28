@@ -29,5 +29,14 @@ public class EbookController {
         return resp;
     }
 
+    @GetMapping("/filter")
+    public CommonResp filter(String name){
+        CommonResp<List<Ebook>> resp = new CommonResp<>();
+        List<Ebook> list = ebookService.filter(name);
+        resp.setContent(list);
+        return resp;
+    }
+
+
 
 }
