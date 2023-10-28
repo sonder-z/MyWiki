@@ -1,6 +1,7 @@
 package com.example.wiki.controller;
 
 import com.example.wiki.domain.Ebook;
+import com.example.wiki.req.EbookReq;
 import com.example.wiki.resp.CommonResp;
 import com.example.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,9 @@ public class EbookController {
 //        return ebookService.list();
 //    }
 
+    /*
+        将返回值封装成通用的返回类
+     */
     @GetMapping("/list")
     public CommonResp list(){
         CommonResp<List<Ebook>> resp = new CommonResp<>();
@@ -29,14 +33,26 @@ public class EbookController {
         return resp;
     }
 
+    /*
+        模糊查询
+     */
+//    @GetMapping("/filter")
+//    public CommonResp filter(String name){
+//        CommonResp<List<Ebook>> resp = new CommonResp<>();
+//        List<Ebook> list = ebookService.filter(name);
+//        resp.setContent(list);
+//        return resp;
+//    }
+
+    /*
+        封装请求参数
+     */
     @GetMapping("/filter")
-    public CommonResp filter(String name){
+    public CommonResp filter(EbookReq req){
         CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.filter(name);
+        List<Ebook> list = ebookService.filter(req);
         resp.setContent(list);
         return resp;
     }
-
-
 
 }
