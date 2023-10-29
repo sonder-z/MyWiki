@@ -6,6 +6,10 @@ import com.example.wiki.mapper.EbookMapper;
 import com.example.wiki.req.EbookReq;
 import com.example.wiki.resp.EbookResp;
 import com.example.wiki.util.CopyUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -18,6 +22,8 @@ import java.util.List;
 public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
 //    public List<Ebook> list(){
 //        return ebookMapper.selectByExample(null);
@@ -45,7 +51,17 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())){
             criteria.andNameLike("%" + req.getName() + "%");
         }
+        //页码和每页条数,分页只对下面第一条查询语句起作用，所以最好挨着查询的代码
+        PageHelper.startPage(2,3);
         List<Ebook> ebooks = ebookMapper.selectByExample(ebookExample);
+
+        //提供了pageinfo类，把列表类传进来就可以查看他的分页信息
+        PageInfo<Ebook> pageInfo = new PageInfo<>(ebooks);
+        //总条数和总页数
+        pageInfo.getTotal();
+        pageInfo.getPages();
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
 
 //        需要把查出来的列表copy到另外一个列表里
 //        List<EbookResp> respList = new ArrayList<>();
