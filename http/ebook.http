@@ -15,6 +15,6 @@ id=1&name=springboot
 POST http://localhost:8880/ebook/save
 Content-Type: application/json
 
-{"id":1,"name":"spring boot"}
+{"name":"test test"}
 
 ###

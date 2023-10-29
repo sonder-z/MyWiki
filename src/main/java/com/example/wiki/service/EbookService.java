@@ -8,6 +8,7 @@ import com.example.wiki.req.EbookSaveReq;
 import com.example.wiki.resp.EbookQueryResp;
 import com.example.wiki.resp.PageResp;
 import com.example.wiki.util.CopyUtil;
+import com.example.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -22,6 +23,9 @@ import java.util.List;
 public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
+
+    @Resource
+    private SnowFlake snowFlake;
 
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
@@ -92,6 +96,7 @@ public class EbookService {
         //保存分为新增保存和更新保存,通过id进行判断
         if (ObjectUtils.isEmpty(req.getId())) {
             //id不存在，新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);  //不加Selective不传参数的值会被null覆盖
 //            ebookMapper.insertSelective(ebook);
         } else {
