@@ -8,6 +8,7 @@ import com.example.wiki.resp.EbookResp;
 import com.example.wiki.util.CopyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<Ebook> list(){
-        return ebookMapper.selectByExample(null);
-    }
+//    public List<Ebook> list(){
+//        return ebookMapper.selectByExample(null);
+//    }
 
 
 ////    添加一个模糊查询服务
@@ -37,10 +38,13 @@ public class EbookService {
 //}
 
     //    添加一个模糊查询服务,封装请求参数和返回实体
-    public List<EbookResp> filter(EbookReq req){
+    public List<EbookResp> list(EbookReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%" + req.getName() + "%");
+        // 添加一个判断实现动态sql
+        if (!ObjectUtils.isEmpty(req.getName())){
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         List<Ebook> ebooks = ebookMapper.selectByExample(ebookExample);
 
 //        需要把查出来的列表copy到另外一个列表里

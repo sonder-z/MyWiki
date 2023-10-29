@@ -23,16 +23,6 @@ public class EbookController {
 //        return ebookService.list();
 //    }
 
-    /*
-        将返回值封装成通用的返回类
-     */
-    @GetMapping("/list")
-    public CommonResp list(){
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.list();
-        resp.setContent(list);
-        return resp;
-    }
 
     /*
         模糊查询
@@ -48,10 +38,10 @@ public class EbookController {
     /*
         封装请求参数
      */
-    @GetMapping("/filter")
+    @GetMapping("/list")
     public CommonResp filter(EbookReq req){
         CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookService.filter(req);
+        List<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
