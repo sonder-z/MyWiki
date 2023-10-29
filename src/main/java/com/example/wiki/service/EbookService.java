@@ -90,6 +90,9 @@ public class EbookService {
 
     }
 
+    /*
+        插入或更新
+     */
     public void save(EbookSaveReq req) {
         //copy一份请求实体作为实体类
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
@@ -105,4 +108,12 @@ public class EbookService {
         }
 
     }
+
+    /*
+        删除
+     */
+    public void delete(Long id) {
+        ebookMapper.deleteByPrimaryKey(id);
+    }
+
 }
