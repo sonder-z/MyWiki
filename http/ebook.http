@@ -15,7 +15,7 @@ id=1&name=springboot
 POST http://localhost:8880/ebook/save
 Content-Type: application/json
 
-{"name":"test test"}
+{"description": "test test"}
 
 ###
 DELETE http://localhost:8880/ebook/delete/373822393472389120

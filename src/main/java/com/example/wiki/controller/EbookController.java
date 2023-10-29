@@ -47,7 +47,7 @@ public class EbookController {
 
     @PostMapping("/save")
     //用json方式提交需要用@RequestBody接收
-    public CommonResp save(@RequestBody EbookSaveReq req){
+    public CommonResp save(@RequestBody @Valid EbookSaveReq req){
         //没有返回值，不传泛型，CommonResp返回默认值
         CommonResp resp = new CommonResp<>();
         ebookService.save(req);
