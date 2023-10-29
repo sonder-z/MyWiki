@@ -5,6 +5,7 @@ import com.example.wiki.domain.EbookExample;
 import com.example.wiki.mapper.EbookMapper;
 import com.example.wiki.req.EbookReq;
 import com.example.wiki.resp.EbookResp;
+import com.example.wiki.resp.PageResp;
 import com.example.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,7 +45,7 @@ public class EbookService {
 //}
 
     //    添加一个模糊查询服务,封装请求参数和返回实体
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         // 添加一个判断实现动态sql
@@ -52,7 +53,8 @@ public class EbookService {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //页码和每页条数,分页只对下面第一条查询语句起作用，所以最好挨着查询的代码
-        PageHelper.startPage(2,3);
+        //封装分页的请求参数后 可以通过前端传入请求参数动态分页
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebooks = ebookMapper.selectByExample(ebookExample);
 
         //提供了pageinfo类，把列表类传进来就可以查看他的分页信息
@@ -76,8 +78,12 @@ public class EbookService {
 //        }
 
         List<EbookResp> respList = CopyUtil.copyList(ebooks, EbookResp.class);
+        //new一个分页的返回类
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
 
-        return respList;
+        return pageResp;
 
     }
 }
