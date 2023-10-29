@@ -1,7 +1,7 @@
 package com.example.wiki.resp;
 
 //有些敏感数据不需要返回，可以封装成一个返回实体按情况返回
-public class EbookResp {
+public class EbookQueryResp {
     private Long id;
 
     private String name;

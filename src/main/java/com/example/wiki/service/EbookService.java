@@ -3,20 +3,19 @@ package com.example.wiki.service;
 import com.example.wiki.domain.Ebook;
 import com.example.wiki.domain.EbookExample;
 import com.example.wiki.mapper.EbookMapper;
-import com.example.wiki.req.EbookReq;
-import com.example.wiki.resp.EbookResp;
+import com.example.wiki.req.EbookQueryReq;
+import com.example.wiki.req.EbookSaveReq;
+import com.example.wiki.resp.EbookQueryResp;
 import com.example.wiki.resp.PageResp;
 import com.example.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +44,7 @@ public class EbookService {
 //}
 
     //    添加一个模糊查询服务,封装请求参数和返回实体
-    public PageResp<EbookResp> list(EbookReq req){
+    public PageResp<EbookQueryResp> list(EbookQueryReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         // 添加一个判断实现动态sql
@@ -77,13 +76,28 @@ public class EbookService {
 //            respList.add(ebookResp);
 //        }
 
-        List<EbookResp> respList = CopyUtil.copyList(ebooks, EbookResp.class);
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebooks, EbookQueryResp.class);
         //new一个分页的返回类
-        PageResp<EbookResp> pageResp = new PageResp<>();
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
 
         return pageResp;
+
+    }
+
+    public void save(EbookSaveReq req) {
+        //copy一份请求实体作为实体类
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        //保存分为新增保存和更新保存,通过id进行判断
+        if (ObjectUtils.isEmpty(req.getId())) {
+            //id不存在，新增
+            ebookMapper.insert(ebook);  //不加Selective不传参数的值会被null覆盖
+//            ebookMapper.insertSelective(ebook);
+        } else {
+            //id存在，更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
 
     }
 }

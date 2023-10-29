@@ -4,4 +4,17 @@ GET http://localhost:8880/ebook/list?page=1&size=2
 
 GET http://localhost:8880/ebook/list?name=Spring
 
+###ptrt form表单方式的提交
+
+POST http://localhost:8880/ebook/save
+Content-Type: application/x-www-form-urlencoded
+
+id=1&name=springboot
+
+###ptr json方式提交
+POST http://localhost:8880/ebook/save
+Content-Type: application/json
+
+{"id":1,"name":"spring boot"}
+
 ###
