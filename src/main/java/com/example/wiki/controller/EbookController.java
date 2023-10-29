@@ -39,7 +39,7 @@ public class EbookController {
         封装请求参数
      */
     @GetMapping("/list")
-    public CommonResp filter(EbookReq req){
+    public CommonResp list(EbookReq req){
         CommonResp<List<EbookResp>> resp = new CommonResp<>();
         List<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
