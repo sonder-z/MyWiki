@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doc")
@@ -42,6 +44,17 @@ public class DocController {
     public CommonResp delete(@PathVariable Long id){
         CommonResp resp = new CommonResp<>();
         docService.delete(id);
+        return resp;
+    }
+
+
+    @DeleteMapping("/delete/{idsStr}")   //将请求参数设置为一个数组字符串，例如：["1,2,3"]
+    public CommonResp delete(@PathVariable String idsStr){  //自动映射
+        CommonResp resp = new CommonResp<>();
+        //将数组字符串转化成数组
+        List<String> list = Arrays.asList(idsStr.split(","));
+        //删除一个数组（列表）
+        docService.delete(list);
         return resp;
     }
 
