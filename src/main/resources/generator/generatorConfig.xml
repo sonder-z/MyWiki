@@ -38,6 +38,7 @@
                              type="XMLMAPPER" />
         <!-- 表 -->
 <!--        <table tableName="demo" domainObjectName="Demo"/>-->
-        <table tableName="ebook" domainObjectName="Ebook"/>
+<!--        <table tableName="ebook" domainObjectName="Ebook"/>-->
+        <table tableName="category" domainObjectName="Category"/>
     </context>
 </generatorConfiguration>

@@ -1,0 +1,15 @@
+GET http://localhost:8880/category/list?page=1&size=5
+Accept: application/json
+
+###
+
+POST http://localhost:8880/category/save
+Content-Type: application/json
+
+{"parent":"000","name": "test","sort": "100"}
+
+###
+
+DELETE http://localhost:8880/category/delete/374015034277367808
+
+###
