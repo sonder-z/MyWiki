@@ -13,3 +13,7 @@ Content-Type: application/json
 DELETE http://localhost:8880/category/delete/374015034277367808
 
 ###
+GET http://localhost:8880/category/all
+Accept: application/json
+
+###

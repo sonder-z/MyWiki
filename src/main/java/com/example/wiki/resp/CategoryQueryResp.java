@@ -1,6 +1,6 @@
 package com.example.wiki.resp;
 
-public class CategoryResp {
+public class CategoryQueryResp {
     private Long id;
 
     private Long parent;
