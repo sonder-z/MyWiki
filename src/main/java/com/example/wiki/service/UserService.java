@@ -86,8 +86,10 @@ public class UserService {
             }
 //            userMapper.insertSelective(user);
         } else {
-            //id存在，更新
-            userMapper.updateByPrimaryKey(user);
+            //id存在，更新,登录名不能修改
+            user.setLoginName(null);
+            userMapper.updateByPrimaryKeySelective(user);
+//            userMapper.updateByPrimaryKey(user);
         }
 
     }
