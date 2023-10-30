@@ -2,6 +2,8 @@ package com.example.wiki.service;
 
 import com.example.wiki.domain.User;
 import com.example.wiki.domain.UserExample;
+import com.example.wiki.exception.BusinessException;
+import com.example.wiki.exception.BusinessExceptionCode;
 import com.example.wiki.mapper.UserMapper;
 import com.example.wiki.req.UserQueryReq;
 import com.example.wiki.req.UserSaveReq;
@@ -14,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -33,6 +36,7 @@ public class UserService {
     public PageResp<UserQueryResp> list(UserQueryReq req){
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
+
         // 添加一个判断实现动态sql
         if (!ObjectUtils.isEmpty(req.getLoginName())){
             criteria.andNameLike("%" + req.getLoginName() + "%");
@@ -66,11 +70,20 @@ public class UserService {
     public void save(UserSaveReq req) {
         //copy一份请求实体作为实体类
         User user = CopyUtil.copy(req, User.class);
+
         //保存分为新增保存和更新保存,通过id进行判断
+        // id为空
         if (ObjectUtils.isEmpty(req.getId())) {
-            //id不存在，新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);  //不加Selective不传参数的值会被null覆盖
+            //查库，看有没有该用户
+            User userDB = selectByLoginName(req.getLoginName());
+            if (ObjectUtils.isEmpty(userDB)) {
+                //用户不存在，新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);  //不加Selective不传参数的值会被null覆盖
+            } else {
+                //用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
 //            userMapper.insertSelective(user);
         } else {
             //id存在，更新
@@ -84,6 +97,23 @@ public class UserService {
      */
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    /*
+        通过用户名查用户数据
+     */
+    public User selectByLoginName(String loginName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(loginName);
+
+        List<User> list = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        } else {
+            return list.get(0);
+        }
+
     }
 
 }
