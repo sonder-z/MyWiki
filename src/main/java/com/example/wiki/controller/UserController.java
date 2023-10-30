@@ -6,6 +6,7 @@ import com.example.wiki.resp.CommonResp;
 import com.example.wiki.resp.UserQueryResp;
 import com.example.wiki.resp.PageResp;
 import com.example.wiki.service.UserService;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -48,6 +49,7 @@ public class UserController {
     @PostMapping("/save")
     //用json方式提交需要用@RequestBody接收
     public CommonResp save(@RequestBody @Valid UserSaveReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         //没有返回值，不传泛型，CommonResp返回默认值
         CommonResp resp = new CommonResp<>();
         userService.save(req);
