@@ -104,5 +104,15 @@ public class DocService {
         docMapper.deleteByExample(docExample);
     }
 
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        //44.516 WARN  [java.lang.NullPointerException] 空指针异常
+
+        if (ObjectUtils.isEmpty(content)) {
+            return "";        //空值处理
+        } else {
+            return content.getContent();
+        }
+    }
 
 }
