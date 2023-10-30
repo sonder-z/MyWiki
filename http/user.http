@@ -16,3 +16,9 @@ Content-Type: application/json
 {"id": 1, "password": "123ABC"}
 
 ###
+POST http://localhost:8880/user/login
+Content-Type: application/json
+
+{"loginName":"test", "password":"123ABC"}
+
+###
