@@ -1,4 +1,4 @@
-GET http://localhost:8880/ebook/list?page=3&size=2000
+GET http://localhost:8880/ebook/list?page=3&size=2
 
 ###
 
@@ -15,7 +15,7 @@ id=1&name=springboot
 POST http://localhost:8880/ebook/save
 Content-Type: application/json
 
-{"description": "test test"}
+{"name":"test","description": "test test"}
 
 ###
 DELETE http://localhost:8880/ebook/delete/373822393472389120

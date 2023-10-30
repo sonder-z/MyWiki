@@ -1,6 +1,7 @@
 package com.example.wiki.controller;
 
 import com.example.wiki.domain.Test;
+import com.example.wiki.resp.CommonResp;
 import com.example.wiki.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
