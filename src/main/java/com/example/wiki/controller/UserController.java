@@ -87,7 +87,7 @@ public class UserController {
         //要把token返回给前端，所以返回参数里面添加token属性
         userLoginResp.setToken(token.toString());
         //远程存储需要将对象序列化，获取的时候在反序列化
-        redisTemplate.opsForValue().set(token, JSONObject.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
 
         return resp;
     }
