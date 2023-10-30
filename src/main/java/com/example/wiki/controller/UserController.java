@@ -1,5 +1,6 @@
 package com.example.wiki.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.wiki.req.UserLoginReq;
 import com.example.wiki.req.UserQueryReq;
 import com.example.wiki.req.UserResetPasswordReq;
@@ -9,34 +10,31 @@ import com.example.wiki.resp.UserLoginResp;
 import com.example.wiki.resp.UserQueryResp;
 import com.example.wiki.resp.PageResp;
 import com.example.wiki.service.UserService;
+import com.example.wiki.util.SnowFlake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
     @Resource
     private UserService userService;
 
-//    @GetMapping("/list")
-//    public List<User> list(){
-//        return userService.list();
-//    }
+    @Resource
+    private RedisTemplate redisTemplate;
 
+    @Resource
+    private SnowFlake snowFlake;
 
-    /*
-        模糊查询
-     */
-//    @GetMapping("/filter")
-//    public CommonResp filter(String name){
-//        CommonResp<List<User>> resp = new CommonResp<>();
-//        List<User> list = userService.filter(name);
-//        resp.setContent(list);
-//        return resp;
-//    }
 
     /*
         封装请求参数
@@ -82,7 +80,15 @@ public class UserController {
         CommonResp<UserLoginResp> resp = new CommonResp<>();
         //登录之后返回用户信息
         UserLoginResp userLoginResp = userService.login(req);
-        resp.setContent(userLoginResp);
+        Long token = snowFlake.nextId();
+        LOG.info("生成单点登录token：{}，并放入redis", token);
+
+        //以token作为key，以userLoginResp作为value，时效，时效单位
+        //要把token返回给前端，所以返回参数里面添加token属性
+        userLoginResp.setToken(token.toString());
+        //远程存储需要将对象序列化，获取的时候在反序列化
+        redisTemplate.opsForValue().set(token, JSONObject.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
+
         return resp;
     }
 
