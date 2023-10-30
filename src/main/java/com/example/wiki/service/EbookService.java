@@ -55,6 +55,10 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())){
             criteria.andNameLike("%" + req.getName() + "%");
         }
+        //添加一个通过二级分类进行查询的功能
+        if (!ObjectUtils.isEmpty(req.getCategoryId2())){
+            criteria.andCategory1IdEqualTo(req.getCategoryId2());
+        }
         //页码和每页条数,分页只对下面第一条查询语句起作用，所以最好挨着查询的代码
         //封装分页的请求参数后 可以通过前端传入请求参数动态分页
         PageHelper.startPage(req.getPage(),req.getSize());
