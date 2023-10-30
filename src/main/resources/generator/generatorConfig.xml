@@ -40,6 +40,9 @@
 <!--        <table tableName="demo" domainObjectName="Demo"/>-->
 <!--        <table tableName="ebook" domainObjectName="Ebook"/>-->
 <!--        <table tableName="category" domainObjectName="Category"/>-->
-        <table tableName="doc" domainObjectName="Doc"/>
+<!--        <table tableName="doc" domainObjectName="Doc"/>-->
+        <table tableName="content" domainObjectName="Content"/>
+
+
     </context>
 </generatorConfiguration>

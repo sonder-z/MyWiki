@@ -78,6 +78,15 @@ create table `test`(
 insert into `test` (`id`, `name`) values (1,'测试1');
 insert into `test` (`id`, `name`) values (2,'测试2');
 
+
+-- 文档内容
+drop table if exists `content`;
+create table `content` (
+  `id` bigint not null comment '文档id',
+  `content` mediumtext not null comment '内容',
+  primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='文档内容';
+
 drop table if exists `demo`;
 create table `demo` (
                         `id` bigint not null comment 'id',

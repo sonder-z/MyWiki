@@ -1,7 +1,9 @@
 package com.example.wiki.service;
 
+import com.example.wiki.domain.Content;
 import com.example.wiki.domain.Doc;
 import com.example.wiki.domain.DocExample;
+import com.example.wiki.mapper.ContentMapper;
 import com.example.wiki.mapper.DocMapper;
 import com.example.wiki.req.DocQueryReq;
 import com.example.wiki.req.DocSaveReq;
@@ -23,6 +25,9 @@ import java.util.List;
 public class DocService {
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private ContentMapper contentMapper;
 
     @Resource
     private SnowFlake snowFlake;
@@ -63,15 +68,23 @@ public class DocService {
     public void save(DocSaveReq req) {
         //copy一份请求实体作为实体类
         Doc doc = CopyUtil.copy(req, Doc.class);
+        Content content = CopyUtil.copy(req, Content.class);  //copy一份content
         //保存分为新增保存和更新保存,通过id进行判断
         if (ObjectUtils.isEmpty(req.getId())) {
             //id不存在，新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);  //不加Selective不传参数的值会被null覆盖
+            content.setId(doc.getId());   //content的id与文档id相同直接获取文档id即可
+            contentMapper.insert(content);
 //            docMapper.insertSelective(doc);
         } else {
             //id存在，更新
             docMapper.updateByPrimaryKey(doc);
+            //contentMapper.updateByPrimaryKeyWithBLOBs(content);  //带大字段的更新
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if (count == 0) {  //确保doc_id存在但content_id不存在的时候也可以更新成功
+                contentMapper.insert(content);
+            }
         }
 
     }
