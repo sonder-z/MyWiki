@@ -6,6 +6,7 @@ import com.example.wiki.exception.BusinessException;
 import com.example.wiki.exception.BusinessExceptionCode;
 import com.example.wiki.mapper.UserMapper;
 import com.example.wiki.req.UserQueryReq;
+import com.example.wiki.req.UserResetPasswordReq;
 import com.example.wiki.req.UserSaveReq;
 import com.example.wiki.resp.UserQueryResp;
 import com.example.wiki.resp.PageResp;
@@ -86,8 +87,9 @@ public class UserService {
             }
 //            userMapper.insertSelective(user);
         } else {
-            //id存在，更新,登录名不能修改
+            //id存在，更新,登录名不能修改,也不能修改密码，独立开发重置密码的接口
             user.setLoginName(null);
+            user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
 //            userMapper.updateByPrimaryKey(user);
         }
@@ -116,6 +118,11 @@ public class UserService {
             return list.get(0);
         }
 
+    }
+
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
 }

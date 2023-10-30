@@ -1,6 +1,7 @@
 package com.example.wiki.controller;
 
 import com.example.wiki.req.UserQueryReq;
+import com.example.wiki.req.UserResetPasswordReq;
 import com.example.wiki.req.UserSaveReq;
 import com.example.wiki.resp.CommonResp;
 import com.example.wiki.resp.UserQueryResp;
@@ -61,6 +62,15 @@ public class UserController {
     public CommonResp delete(@PathVariable Long id){
         CommonResp resp = new CommonResp<>();
         userService.delete(id);
+        return resp;
+    }
+
+    @PostMapping("/reset-password")
+    //PathVariable:从url接收参数
+    public CommonResp resetPassword(@RequestBody @Valid UserResetPasswordReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(req);
         return resp;
     }
 
