@@ -41,7 +41,8 @@
 <!--        <table tableName="ebook" domainObjectName="Ebook"/>-->
 <!--        <table tableName="category" domainObjectName="Category"/>-->
 <!--        <table tableName="doc" domainObjectName="Doc"/>-->
-        <table tableName="content" domainObjectName="Content"/>
+<!--        <table tableName="content" domainObjectName="Content"/>-->
+        <table tableName="user" domainObjectName="User"/>
 
 
     </context>
