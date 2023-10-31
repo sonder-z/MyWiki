@@ -32,3 +32,8 @@ Content-Type: application/json
 {"ebookId": 1, "parent": 1, "name": "test1", "sort": 1, "content": "test1"}
 
 ###
+
+GET http://localhost:8880/doc/vote/1
+Accept: application/json
+
+###

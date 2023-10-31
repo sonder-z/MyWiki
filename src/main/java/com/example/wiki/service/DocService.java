@@ -123,4 +123,8 @@ public class DocService {
         }
     }
 
+    public void vote (Long id) {
+        docMapperCust.IncreaseVoteCount(id);
+    }
+
 }
