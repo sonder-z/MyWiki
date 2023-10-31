@@ -21,7 +21,14 @@ Content-Type: application/json
 DELETE http://localhost:8880/ebook/delete/373822393472389120
 
 ###
-GET http://localhost:8880/doc/find-content/1
+GET http://localhost:8880/doc/find-content/2
 Accept: application/json
+
+###
+
+POST http://localhost:8880/doc/save
+Content-Type: application/json
+
+{"ebookId": 1, "parent": 1, "name": "test1", "sort": 1, "content": "test1"}
 
 ###

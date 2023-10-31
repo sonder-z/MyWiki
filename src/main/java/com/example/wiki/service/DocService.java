@@ -5,6 +5,7 @@ import com.example.wiki.domain.Doc;
 import com.example.wiki.domain.DocExample;
 import com.example.wiki.mapper.ContentMapper;
 import com.example.wiki.mapper.DocMapper;
+import com.example.wiki.mapper.DocMapperCust;
 import com.example.wiki.req.DocQueryReq;
 import com.example.wiki.req.DocSaveReq;
 import com.example.wiki.resp.DocQueryResp;
@@ -25,6 +26,9 @@ import java.util.List;
 public class DocService {
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     @Resource
     private ContentMapper contentMapper;
@@ -73,6 +77,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             //id不存在，新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);  //不加Selective不传参数的值会被null覆盖
             content.setId(doc.getId());   //content的id与文档id相同直接获取文档id即可
             contentMapper.insert(content);
@@ -108,6 +114,8 @@ public class DocService {
         Content content = contentMapper.selectByPrimaryKey(id);
         //44.516 WARN  [java.lang.NullPointerException] 空指针异常
 
+        //阅读数加一
+        docMapperCust.IncreaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";        //空值处理
         } else {

@@ -1,6 +1,5 @@
 package com.example.wiki.config;
 
-import com.example.wiki.interceptor.LogInterceptor;
 import com.example.wiki.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,6 +23,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 "/category/all",
                 "/ebook/list",
                 "/doc/all/**",
+                "/doc/save/**",
                 "/doc/find-content/**"
         );
     }
