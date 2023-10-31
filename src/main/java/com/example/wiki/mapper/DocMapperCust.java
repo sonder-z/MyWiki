@@ -7,5 +7,7 @@ public interface  DocMapperCust {
 
     void IncreaseVoteCount(@Param("id") Long id);
 
+    void updateEbookInfo();
+
 
 }
