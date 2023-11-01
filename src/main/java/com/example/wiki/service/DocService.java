@@ -19,6 +19,7 @@ import com.example.wiki.util.SnowFlake;
 import com.example.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,9 @@ public class DocService {
 
     @Resource
     private WsService wsService;
+
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
 
@@ -149,6 +153,7 @@ public class DocService {
             Doc doc = docMapper.selectByPrimaryKey(id);
             wsService.sendInfo("【"+doc.getName()+"】被点赞");
 //            webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
+            rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + doc.getName() + "】被点赞！");
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
