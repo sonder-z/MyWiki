@@ -16,6 +16,7 @@ import com.example.wiki.util.CopyUtil;
 import com.example.wiki.util.RedisUtil;
 import com.example.wiki.util.RequestContext;
 import com.example.wiki.util.SnowFlake;
+import com.example.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -42,6 +43,9 @@ public class DocService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private WebSocketServer webSocketServer;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
 
@@ -135,6 +139,10 @@ public class DocService {
         String ip = RequestContext.getRemoteAddr();
         if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)){
             docMapperCust.IncreaseVoteCount(id);
+
+            //点赞成功推送消息
+            Doc doc = docMapper.selectByPrimaryKey(id);
+            webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
