@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //如果将WikiApplication放到单独的包里 需要添加@ComponentScan("com.example")
 @MapperScan("com.example.wiki.mapper")
 @EnableScheduling
+@EnableAsync
 //识别mapper层
 public class WikiApplication {
     private static final Logger LOG = LoggerFactory.getLogger(WikiApplication.class);

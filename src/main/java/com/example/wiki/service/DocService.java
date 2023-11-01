@@ -47,6 +47,9 @@ public class DocService {
     @Resource
     private WebSocketServer webSocketServer;
 
+    @Resource
+    private WsService wsService;
+
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
 
     //    添加一个模糊查询服务,封装请求参数和返回实体
@@ -142,7 +145,8 @@ public class DocService {
 
             //点赞成功推送消息
             Doc doc = docMapper.selectByPrimaryKey(id);
-            webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
+            wsService.sendInfo("【"+doc.getName()+"】被点赞");
+//            webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
