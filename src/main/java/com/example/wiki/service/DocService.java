@@ -151,7 +151,7 @@ public class DocService {
 
             //点赞成功推送消息
             Doc doc = docMapper.selectByPrimaryKey(id);
-            wsService.sendInfo("【"+doc.getName()+"】被点赞");
+//            wsService.sendInfo("【"+doc.getName()+"】被点赞");
 //            webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
             rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + doc.getName() + "】被点赞！");
         } else {
